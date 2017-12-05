@@ -50,7 +50,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 
 	// Store the textures
 	textureName = { "asteroid1", "asteroid2", "asteroid3", "asteroid4", "bullet","theWizard","theBackground"};
-	texturesToUse = { "Images\\asteroid1.png", "Images\\asteroid2.png", "Images\\asteroid3.png", "Images\\asteroid4.png", "Images\\bullet.png", "Images\\rocketSprite.png", "Images\\starscape1024x768.png"};
+	texturesToUse = { "Images\\asteroid1.png", "Images\\asteroid2.png", "Images\\asteroid3.png", "Images\\asteroid4.png", "Images\\bullet.png", "Images\\Wizard.png", "Images\\Background.png"};
 	for (int tCount = 0; tCount < textureName.size(); tCount++)
 	{	
 		theTextureMgr->addTexture(textureName[tCount], texturesToUse[tCount]);
@@ -81,10 +81,10 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	spriteBkgd.setTexture(theTextureMgr->getTexture("theBackground"));
 	spriteBkgd.setSpriteDimensions(theTextureMgr->getTexture("theBackground")->getTWidth(), theTextureMgr->getTexture("theBackground")->getTHeight());
 
-	theRocket.setSpritePos({ 500, 350 });
-	theRocket.setTexture(theTextureMgr->getTexture("theRocket"));
-	theRocket.setSpriteDimensions(theTextureMgr->getTexture("theRocket")->getTWidth(), theTextureMgr->getTexture("theRocket")->getTHeight());
-	theRocket.setRocketVelocity({ 0, 0 });
+	theWizard.setSpritePos({ 500, 550 });
+	theWizard.setTexture(theTextureMgr->getTexture("theWizard"));
+	theWizard.setSpriteDimensions(theTextureMgr->getTexture("theWizard")->getTWidth()/1.4, theTextureMgr->getTexture("theWizard")->getTHeight()/1.4);
+	theWizard.setRocketVelocity({ 0, 0 });
 
 	// Create vector array of textures
 
@@ -137,7 +137,7 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	FPoint scale = { 1, 1 };
 	tempTextTexture->renderTexture(theRenderer, tempTextTexture->getTexture(), &tempTextTexture->getTextureRect(), &pos, scale);
 	// render the rocket
-	theRocket.render(theRenderer, &theRocket.getSpriteDimensions(), &theRocket.getSpritePos(), theRocket.getSpriteRotAngle(), &theRocket.getSpriteCentre(), theRocket.getSpriteScale());
+	theWizard.render(theRenderer, &theWizard.getSpriteDimensions(), &theWizard.getSpritePos(), theWizard.getSpriteRotAngle(), &theWizard.getSpriteCentre(), theWizard.getSpriteScale());
 	SDL_RenderPresent(theRenderer);
 }
 
@@ -204,7 +204,7 @@ void cGame::update(double deltaTime)
 
 
 	// Update the Rockets position
-	theRocket.update(deltaTime);
+	theWizard.update(deltaTime);
 }
 
 bool cGame::getInput(bool theLoop)
@@ -256,44 +256,44 @@ bool cGame::getInput(bool theLoop)
 					break;
 				case SDLK_DOWN:
 				{
-					if (theRocket.getSpritePos().x < (renderWidth - theRocket.getSpritePos().w))
+					if (theWizard.getSpritePos().x < (renderWidth - theWizard.getSpritePos().w))
 					{
-						theRocket.setSpriteTranslation({ -5, -5 });
+						theWizard.setSpriteTranslation({ -5, -5 });
 					}
 				}
 				break;
 
 				case SDLK_UP:
 				{
-					if (theRocket.getSpritePos().x > 0)
+					if (theWizard.getSpritePos().x > 0)
 					{
-						theRocket.setSpriteTranslation({ 5, 5 });
+						theWizard.setSpriteTranslation({ 5, 5 });
 					}
 				}
 				break;
 				case SDLK_RIGHT:
 				{
-					theRocket.setSpriteRotAngle(theRocket.getSpriteRotAngle() + 5);
+					theWizard.setSpriteRotAngle(theWizard.getSpriteRotAngle() + 5);
 				}
 				break;
 
 				case SDLK_LEFT:
 				{
-					theRocket.setSpriteRotAngle(theRocket.getSpriteRotAngle() - 5);
+					theWizard.setSpriteRotAngle(theWizard.getSpriteRotAngle() - 5);
 				}
 				break;
 				case SDLK_SPACE:
 				{
 					theBullets.push_back(new cBullet);
 					int numBullets = theBullets.size() - 1;
-					theBullets[numBullets]->setSpritePos({ theRocket.getBoundingRect().x + theRocket.getSpriteCentre().x, theRocket.getBoundingRect().y + theRocket.getSpriteCentre().y });
+					theBullets[numBullets]->setSpritePos({ theWizard.getBoundingRect().x + theWizard.getSpriteCentre().x, theWizard.getBoundingRect().y + theWizard.getSpriteCentre().y });
 					theBullets[numBullets]->setSpriteTranslation({ 2, 2 });
 					theBullets[numBullets]->setTexture(theTextureMgr->getTexture("bullet"));
 					theBullets[numBullets]->setSpriteDimensions(theTextureMgr->getTexture("bullet")->getTWidth(), theTextureMgr->getTexture("bullet")->getTHeight());
 					theBullets[numBullets]->setBulletVelocity({ 2, 2 });
-					theBullets[numBullets]->setSpriteRotAngle(theRocket.getSpriteRotAngle());
+					theBullets[numBullets]->setSpriteRotAngle(theWizard.getSpriteRotAngle());
 					theBullets[numBullets]->setActive(true);
-					cout << "Bullet added to Vector at position - x: " << theRocket.getBoundingRect().x << " y: " << theRocket.getBoundingRect().y << endl;
+					cout << "Bullet added to Vector at position - x: " << theWizard.getBoundingRect().x << " y: " << theWizard.getBoundingRect().y << endl;
 				}
 				theSoundMgr->getSnd("shot")->play(0);
 				break;
