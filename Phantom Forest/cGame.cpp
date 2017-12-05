@@ -49,7 +49,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	theSoundMgr->initMixer();
 
 	// Store the textures
-	textureName = { "asteroid1", "asteroid2", "asteroid3", "asteroid4", "bullet","theWizard","theBackground"};
+	textureName = { "asteroid1", "asteroid2", "asteroid3", "asteroid4", "bullet","theRocket","theBackground"};
 	texturesToUse = { "Images\\asteroid1.png", "Images\\asteroid2.png", "Images\\asteroid3.png", "Images\\asteroid4.png", "Images\\bullet.png", "Images\\rocketSprite.png", "Images\\starscape1024x768.png"};
 	for (int tCount = 0; tCount < textureName.size(); tCount++)
 	{	
