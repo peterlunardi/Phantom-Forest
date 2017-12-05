@@ -85,7 +85,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	theWizard.setTexture(theTextureMgr->getTexture("theWizard"));
 	theWizard.setSpriteDimensions(theTextureMgr->getTexture("theWizard")->getTWidth(), theTextureMgr->getTexture("theWizard")->getTHeight());
 	theWizard.setRocketVelocity({ 0, 0 });
-	theWizard.setSpriteScale({ 1.4,1.4 });
+	theWizard.setSpriteScale({ 1,1 });
 
 	// Create vector array of textures
 
