@@ -255,7 +255,8 @@ bool cGame::getInput(bool theLoop)
 				case SDLK_ESCAPE:
 					theLoop = false;
 					break;
-				case SDLK_DOWN:
+
+				/*case SDLK_DOWN:
 				{
 					if (theWizard.getSpritePos().x < (renderWidth - theWizard.getSpritePos().w))
 					{
@@ -272,15 +273,17 @@ bool cGame::getInput(bool theLoop)
 					}
 				}
 				break;
+				*/
+
 				case SDLK_RIGHT:
 				{
-					theWizard.setSpriteRotAngle(theWizard.getSpriteRotAngle() + 5);
+					theWizard.setSpritePos({ theWizard.getSpritePos().x + 5, theWizard.getSpritePos().y });
 				}
 				break;
 
 				case SDLK_LEFT:
 				{
-					theWizard.setSpriteRotAngle(theWizard.getSpriteRotAngle() - 5);
+					theWizard.setSpritePos({ theWizard.getSpritePos().x - 5, theWizard.getSpritePos().y });
 				}
 				break;
 				case SDLK_SPACE:
