@@ -81,7 +81,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	spriteBkgd.setTexture(theTextureMgr->getTexture("theBackground"));
 	spriteBkgd.setSpriteDimensions(theTextureMgr->getTexture("theBackground")->getTWidth(), theTextureMgr->getTexture("theBackground")->getTHeight());
 
-	theWizard.setSpritePos({ 500, 550 });
+	theWizard.setSpritePos({ 500, 600 });
 	theWizard.setTexture(theTextureMgr->getTexture("theWizard"));
 	theWizard.setSpriteDimensions(theTextureMgr->getTexture("theWizard")->getTWidth(), theTextureMgr->getTexture("theWizard")->getTHeight());
 	theWizard.setRocketVelocity({ 0, 0 });
