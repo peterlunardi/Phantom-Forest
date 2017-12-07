@@ -62,7 +62,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	{
 		theFontMgr->addFont(fontList[fonts], fontsToUse[fonts], 36);
 	}
-	gameTextList = { "Asteroids"};
+	gameTextList = { ""};
 	
 	theTextureMgr->addTexture("Title", theFontMgr->getFont("spaceAge")->createTextTexture(theRenderer, gameTextList[0], SOLID, { 0, 255, 0, 255 }, { 0, 0, 0, 0 }));
 
@@ -98,7 +98,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 		theAsteroids[astro]->setTexture(theTextureMgr->getTexture(textureName[randAsteroid]));
 		theAsteroids[astro]->setSpriteDimensions(theTextureMgr->getTexture(textureName[randAsteroid])->getTWidth(), theTextureMgr->getTexture(textureName[randAsteroid])->getTHeight());
 		theAsteroids[astro]->setAsteroidVelocity({ 3, 3 });
-		theAsteroids[astro]->setActive(true);
+		theAsteroids[astro]->setActive(false);
 	}
 
 }
