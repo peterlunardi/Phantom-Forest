@@ -210,6 +210,20 @@ void cGame::update(double deltaTime)
 
 bool cGame::getInput(bool theLoop)
 {
+
+	const Uint8* keystate = SDL_GetKeyboardState(NULL);
+
+	if (keystate[SDL_SCANCODE_RIGHT])
+	{
+		theWizard.setSpritePos({ theWizard.getSpritePos().x + 5, theWizard.getSpritePos().y });
+	}
+
+	if (keystate[SDL_SCANCODE_LEFT])
+	{
+		theWizard.setSpritePos({ theWizard.getSpritePos().x - 5, theWizard.getSpritePos().y });
+	}
+
+
 	SDL_Event event;
 
 	while (SDL_PollEvent(&event))
@@ -278,14 +292,14 @@ bool cGame::getInput(bool theLoop)
 				case SDLK_RIGHT:
 				{
 					//theWizard.setSpritePos({ theWizard.getSpritePos().x + 8, theWizard.getSpritePos().y });
-					theWizard.setRocketVelocity({theWizard.getRocketVelocity().x - 30, theWizard.getRocketVelocity().y });
+					//theWizard.setRocketVelocity({theWizard.getRocketVelocity().x * -30, theWizard.getRocketVelocity().y });
 				}
 				break;
 
 				case SDLK_LEFT:
 				{
 					//theWizard.setSpritePos({ theWizard.getSpritePos().x - 8, theWizard.getSpritePos().y });
-					theWizard.setRocketVelocity({ theWizard.getRocketVelocity().x + 30, theWizard.getRocketVelocity().y });
+					//theWizard.setRocketVelocity({ theWizard.getRocketVelocity().x * 30, theWizard.getRocketVelocity().y });
 				}
 				break;
 				case SDLK_SPACE:

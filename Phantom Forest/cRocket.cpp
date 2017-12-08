@@ -24,25 +24,27 @@ Update the sprite position
 void cRocket::update(double deltaTime)
 {
 
-	FPoint direction = { 0.0f, 0.0f };
+	//FPoint direction = { 0.0f, 0.0f };
 	//direction.Y = (sin(this->getSpriteRotAngle()*PI / 180));
+	//direction.Y = 0;
+	//direction.X = 1;
 	//direction.X = -(cos(this->getSpriteRotAngle()*PI / 180));
 
-	direction.X *= this->getSpriteTranslation().x;
-	direction.Y *= this->getSpriteTranslation().y;
+	//direction.X *= this->getSpriteTranslation().x;
+	//direction.Y *= this->getSpriteTranslation().y;
 
-	this->rocketVelocity.x = this->rocketVelocity.x + direction.X;
-	this->rocketVelocity.y = this->rocketVelocity.y + direction.Y;
+	//this->rocketVelocity.x = this->rocketVelocity.x + direction.X;
+	//this->rocketVelocity.y = this->rocketVelocity.y + direction.Y;
 
-	SDL_Rect currentSpritePos = this->getSpritePos();
-	currentSpritePos.x -= this->rocketVelocity.x * deltaTime;
-	currentSpritePos.y += this->rocketVelocity.y * deltaTime;
+	//SDL_Rect currentSpritePos = this->getSpritePos();
+	//currentSpritePos.x -= this->rocketVelocity.x * deltaTime;
+	//currentSpritePos.y += this->rocketVelocity.y * deltaTime;
 
-	this->rocketVelocity.x *= 0.95;
-	this->rocketVelocity.y *= 0.95;
+	//this->rocketVelocity.x *= 0.9;
+	//this->rocketVelocity.y *= 0.9;
 	
-	this->setSpritePos({ currentSpritePos.x , currentSpritePos.y  });
-	this->setBoundingRect(this->getSpritePos());
+	//this->setSpritePos({ currentSpritePos.x , currentSpritePos.y  });
+	//this->setBoundingRect(this->getSpritePos());
 }
 /*
 =================================================================
