@@ -36,9 +36,6 @@
     <ClInclude Include="cGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cRocket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cSDL2WNDManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -58,6 +55,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cRocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -83,9 +83,6 @@
     <ClCompile Include="cGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cRocket.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cSDL2WNDManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cTextureMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cRocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

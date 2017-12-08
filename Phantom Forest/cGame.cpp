@@ -306,7 +306,18 @@ bool cGame::getInput(bool theLoop)
 				{
 					theBullets.push_back(new cBullet);
 					int numBullets = theBullets.size() - 1;
-					theBullets[numBullets]->setSpritePos({ rand() % 900 + 5 , 200});
+					//theBullets[numBullets]->setSpritePos({ rand() % 900 + 5 , 200});
+					theBullets[numBullets]->setSpritePos({ rand() % (theWizard.getSpritePos().x + 700) + (theWizard.getSpritePos().x - 500) , 200 });
+					if (theBullets[numBullets]->getSpritePos().x < 0)
+					{
+						theBullets[numBullets]->setSpritePos({ rand() % 450 + 0, 200 });
+					}
+
+					if (theBullets[numBullets]->getSpritePos().x > 900)
+					{
+						theBullets[numBullets]->setSpritePos({ rand() % 900 + 450, 200 });
+					}
+
 					theBullets[numBullets]->setSpriteTranslation({ 2, -2 });
 					theBullets[numBullets]->setTexture(theTextureMgr->getTexture("apple"));
 					theBullets[numBullets]->setSpriteDimensions(theTextureMgr->getTexture("apple")->getTWidth(), theTextureMgr->getTexture("apple")->getTHeight());
