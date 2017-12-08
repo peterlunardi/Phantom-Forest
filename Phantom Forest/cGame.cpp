@@ -81,7 +81,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	spriteBkgd.setTexture(theTextureMgr->getTexture("theBackground"));
 	spriteBkgd.setSpriteDimensions(theTextureMgr->getTexture("theBackground")->getTWidth(), theTextureMgr->getTexture("theBackground")->getTHeight());
 
-	theWizard.setSpritePos({ 500, 600 });
+	theWizard.setSpritePos({ 470, 600 });
 	theWizard.setTexture(theTextureMgr->getTexture("theWizard"));
 	theWizard.setSpriteDimensions(theTextureMgr->getTexture("theWizard")->getTWidth(), theTextureMgr->getTexture("theWizard")->getTHeight());
 	theWizard.setRocketVelocity({ 0, 0 });
@@ -307,15 +307,15 @@ bool cGame::getInput(bool theLoop)
 					theBullets.push_back(new cBullet);
 					int numBullets = theBullets.size() - 1;
 					//theBullets[numBullets]->setSpritePos({ rand() % 900 + 5 , 200});
-					theBullets[numBullets]->setSpritePos({ rand() % (theWizard.getSpritePos().x + 700) + (theWizard.getSpritePos().x - 500) , 200 });
+					theBullets[numBullets]->setSpritePos({ rand() % (theWizard.getSpritePos().x + 470) + (theWizard.getSpritePos().x - 470) , 200 });
 					if (theBullets[numBullets]->getSpritePos().x < 0)
 					{
-						theBullets[numBullets]->setSpritePos({ rand() % 450 + 0, 200 });
+						theBullets[numBullets]->setSpritePos({ rand() % 470 + 0, 200 });
 					}
 
-					if (theBullets[numBullets]->getSpritePos().x > 900)
+					if (theBullets[numBullets]->getSpritePos().x > 940)
 					{
-						theBullets[numBullets]->setSpritePos({ rand() % 900 + 450, 200 });
+						theBullets[numBullets]->setSpritePos({ rand() % 940 + 470, 200 });
 					}
 
 					theBullets[numBullets]->setSpriteTranslation({ 2, -2 });
