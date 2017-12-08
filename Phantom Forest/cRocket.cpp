@@ -25,8 +25,8 @@ void cRocket::update(double deltaTime)
 {
 
 	FPoint direction = { 0.0f, 0.0f };
-	direction.X = (sin(this->getSpriteRotAngle()*PI / 180));
-	direction.Y = -(cos(this->getSpriteRotAngle()*PI / 180));
+	//direction.Y = (sin(this->getSpriteRotAngle()*PI / 180));
+	//direction.X = -(cos(this->getSpriteRotAngle()*PI / 180));
 
 	direction.X *= this->getSpriteTranslation().x;
 	direction.Y *= this->getSpriteTranslation().y;
@@ -35,7 +35,7 @@ void cRocket::update(double deltaTime)
 	this->rocketVelocity.y = this->rocketVelocity.y + direction.Y;
 
 	SDL_Rect currentSpritePos = this->getSpritePos();
-	currentSpritePos.x += this->rocketVelocity.x * deltaTime;
+	currentSpritePos.x -= this->rocketVelocity.x * deltaTime;
 	currentSpritePos.y += this->rocketVelocity.y * deltaTime;
 
 	this->rocketVelocity.x *= 0.95;

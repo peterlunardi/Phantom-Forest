@@ -49,8 +49,8 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	theSoundMgr->initMixer();
 
 	// Store the textures
-	textureName = { "asteroid1", "asteroid2", "asteroid3", "asteroid4", "bullet","theWizard","theBackground"};
-	texturesToUse = { "Images\\asteroid1.png", "Images\\asteroid2.png", "Images\\asteroid3.png", "Images\\asteroid4.png", "Images\\bullet.png", "Images\\Wizard.png", "Images\\Background.png"};
+	textureName = { "asteroid1", "asteroid2", "asteroid3", "asteroid4", "bullet","theWizard","theBackground", "apple"};
+	texturesToUse = { "Images\\asteroid1.png", "Images\\asteroid2.png", "Images\\asteroid3.png", "Images\\asteroid4.png", "Images\\bullet.png", "Images\\Wizard.png", "Images\\Background.png", "Images\\greenapple.png"};
 	for (int tCount = 0; tCount < textureName.size(); tCount++)
 	{	
 		theTextureMgr->addTexture(textureName[tCount], texturesToUse[tCount]);
@@ -69,7 +69,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	// Load game sounds
 	soundList = { "theme", "shot", "explosion" };
 	soundTypes = { MUSIC, SFX, SFX };
-	soundsToUse = { "Audio/who10Edit.wav", "Audio/shot007.wav", "Audio/explosion2.wav" };
+	soundsToUse = { "Audio/BackgroundTheme.wav", "Audio/shot007.wav", "Audio/explosion2.wav" };
 	for (int sounds = 0; sounds < soundList.size(); sounds++)
 	{
 		theSoundMgr->add(soundList[sounds], soundsToUse[sounds], soundTypes[sounds]);
@@ -277,23 +277,25 @@ bool cGame::getInput(bool theLoop)
 
 				case SDLK_RIGHT:
 				{
-					theWizard.setSpritePos({ theWizard.getSpritePos().x + 5, theWizard.getSpritePos().y });
+					//theWizard.setSpritePos({ theWizard.getSpritePos().x + 8, theWizard.getSpritePos().y });
+					theWizard.setRocketVelocity({theWizard.getRocketVelocity().x - 30, theWizard.getRocketVelocity().y });
 				}
 				break;
 
 				case SDLK_LEFT:
 				{
-					theWizard.setSpritePos({ theWizard.getSpritePos().x - 5, theWizard.getSpritePos().y });
+					//theWizard.setSpritePos({ theWizard.getSpritePos().x - 8, theWizard.getSpritePos().y });
+					theWizard.setRocketVelocity({ theWizard.getRocketVelocity().x + 30, theWizard.getRocketVelocity().y });
 				}
 				break;
 				case SDLK_SPACE:
 				{
 					theBullets.push_back(new cBullet);
 					int numBullets = theBullets.size() - 1;
-					theBullets[numBullets]->setSpritePos({ theWizard.getBoundingRect().x + theWizard.getSpriteCentre().x, theWizard.getBoundingRect().y + theWizard.getSpriteCentre().y });
-					theBullets[numBullets]->setSpriteTranslation({ 2, 2 });
-					theBullets[numBullets]->setTexture(theTextureMgr->getTexture("bullet"));
-					theBullets[numBullets]->setSpriteDimensions(theTextureMgr->getTexture("bullet")->getTWidth(), theTextureMgr->getTexture("bullet")->getTHeight());
+					theBullets[numBullets]->setSpritePos({ rand() % 900 + 5 , 200});
+					theBullets[numBullets]->setSpriteTranslation({ 2, -2 });
+					theBullets[numBullets]->setTexture(theTextureMgr->getTexture("apple"));
+					theBullets[numBullets]->setSpriteDimensions(theTextureMgr->getTexture("apple")->getTWidth(), theTextureMgr->getTexture("apple")->getTHeight());
 					theBullets[numBullets]->setBulletVelocity({ 2, 2 });
 					theBullets[numBullets]->setSpriteRotAngle(theWizard.getSpriteRotAngle());
 					theBullets[numBullets]->setActive(true);
