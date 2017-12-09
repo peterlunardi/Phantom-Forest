@@ -18,7 +18,7 @@ Constructor
 */
 cGame::cGame()
 {
-
+	cout << getElapsedSeconds();
 }
 /*
 =================================================================================
@@ -56,15 +56,17 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 		theTextureMgr->addTexture(textureName[tCount], texturesToUse[tCount]);
 	}
 	// Create textures for Game Dialogue (text)
-	fontList = { "digital", "spaceAge" };
-	fontsToUse = { "Fonts/digital-7.ttf", "Fonts/space age.ttf" };
+	fontList = { "digital", "spaceAge", "Amatic" };
+	fontsToUse = { "Fonts/digital-7.ttf", "Fonts/space age.ttf", "Fonts/Amatic-Bold.ttf" };
 	for (int fonts = 0; fonts < fontList.size(); fonts++)
 	{
-		theFontMgr->addFont(fontList[fonts], fontsToUse[fonts], 36);
+		theFontMgr->addFont(fontList[fonts], fontsToUse[fonts], 48);
 	}
-	gameTextList = { ""};
+	gameTextList = { "Time remaining:" , "Score: " };
 	
-	theTextureMgr->addTexture("Title", theFontMgr->getFont("spaceAge")->createTextTexture(theRenderer, gameTextList[0], SOLID, { 0, 255, 0, 255 }, { 0, 0, 0, 0 }));
+	theTextureMgr->addTexture("Title", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, gameTextList[0], SOLID, { 0, 0, 0, 255 }, { 0, 0, 0, 0 }));
+	theTextureMgr->addTexture("Score", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, gameTextList[1], SOLID, { 0, 0, 0, 255 }, { 0, 0, 0, 0 }));
+
 
 	// Load game sounds
 	soundList = { "theme", "shot", "explosion" };
@@ -107,6 +109,7 @@ void cGame::run(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 {
 	bool loop = true;
 
+
 	while (loop)
 	{
 		//We get the time that passed since the last frame
@@ -137,6 +140,11 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	SDL_Rect pos = { 10, 10, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
 	FPoint scale = { 1, 1 };
 	tempTextTexture->renderTexture(theRenderer, tempTextTexture->getTexture(), &tempTextTexture->getTextureRect(), &pos, scale);
+	// Render the score
+	cTexture* tempScoreTexture = theTextureMgr->getTexture("Score");
+	SDL_Rect posScore = { 600, 10, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
+	FPoint scaleScore = { 1, 1 };
+	tempTextTexture->renderTexture(theRenderer, tempScoreTexture->getTexture(), &tempTextTexture->getTextureRect(), &posScore, scaleScore);
 	// render the rocket
 	theWizard.render(theRenderer, &theWizard.getSpriteDimensions(), &theWizard.getSpritePos(), theWizard.getSpriteRotAngle(), &theWizard.getSpriteCentre(), theWizard.getSpriteScale());
 	SDL_RenderPresent(theRenderer);
