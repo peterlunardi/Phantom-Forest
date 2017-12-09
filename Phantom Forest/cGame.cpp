@@ -215,12 +215,12 @@ bool cGame::getInput(bool theLoop)
 
 	if (keystate[SDL_SCANCODE_RIGHT])
 	{
-		theWizard.setSpritePos({ theWizard.getSpritePos().x + 5, theWizard.getSpritePos().y });
+		theWizard.setSpritePos({ theWizard.getSpritePos().x + 15, theWizard.getSpritePos().y });
 	}
 
 	if (keystate[SDL_SCANCODE_LEFT])
 	{
-		theWizard.setSpritePos({ theWizard.getSpritePos().x - 5, theWizard.getSpritePos().y });
+		theWizard.setSpritePos({ theWizard.getSpritePos().x - 15, theWizard.getSpritePos().y });
 	}
 
 
@@ -310,15 +310,15 @@ bool cGame::getInput(bool theLoop)
 					theBullets[numBullets]->setSpritePos({ rand() % (theWizard.getSpritePos().x + 470) + (theWizard.getSpritePos().x - 470) , 200 });
 					if (theBullets[numBullets]->getSpritePos().x < 0)
 					{
-						theBullets[numBullets]->setSpritePos({ rand() % 470 + 0, 200 });
+						theBullets[numBullets]->setSpritePos({ rand() % 670 + 0, 200 });
 					}
 
 					if (theBullets[numBullets]->getSpritePos().x > 940)
 					{
-						theBullets[numBullets]->setSpritePos({ rand() % 940 + 470, 200 });
+						theBullets[numBullets]->setSpritePos({ rand() % 940 + 270, 200 });
 					}
 
-					theBullets[numBullets]->setSpriteTranslation({ 2, -2 });
+					theBullets[numBullets]->setSpriteTranslation({ 2, -6 });
 					theBullets[numBullets]->setTexture(theTextureMgr->getTexture("apple"));
 					theBullets[numBullets]->setSpriteDimensions(theTextureMgr->getTexture("apple")->getTWidth(), theTextureMgr->getTexture("apple")->getTHeight());
 					theBullets[numBullets]->setBulletVelocity({ 2, 2 });
