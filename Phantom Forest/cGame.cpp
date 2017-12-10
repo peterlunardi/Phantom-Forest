@@ -213,6 +213,12 @@ void cGame::update(double deltaTime)
 				theSoundMgr->getSnd("fruitCollect")->play(0);
 			}
 
+			//remove any ingredients that reach the bottom of the screen without colliding with player
+			if ((*bulletIterartor)->getBoundingRect().y > 1000)
+			{
+				(*bulletIterartor)->setActive(false);
+			}
+
 	}
 
 	// Update the Rockets position
