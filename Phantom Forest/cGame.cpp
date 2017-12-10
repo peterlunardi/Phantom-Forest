@@ -49,8 +49,8 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	theSoundMgr->initMixer();
 
 	// Store the textures
-	textureName = { "asteroid1", "asteroid2", "asteroid3", "asteroid4", "bullet","theWizard","theBackground", "apple"};
-	texturesToUse = { "Images\\asteroid1.png", "Images\\asteroid2.png", "Images\\asteroid3.png", "Images\\asteroid4.png", "Images\\bullet.png", "Images\\Wizard.png", "Images\\Background.png", "Images\\greenapple.png"};
+	textureName = { "asteroid1", "asteroid2", "asteroid3", "asteroid4", "bullet","theWizard","theBackground", "apple", "berry", "orange"};
+	texturesToUse = { "Images\\asteroid1.png", "Images\\asteroid2.png", "Images\\asteroid3.png", "Images\\asteroid4.png", "Images\\bullet.png", "Images\\Wizard.png", "Images\\Background.png", "Images\\greenapple.png", "Images\\berry.png" , "Images\\orange.png" };
 	for (int tCount = 0; tCount < textureName.size(); tCount++)
 	{	
 		theTextureMgr->addTexture(textureName[tCount], texturesToUse[tCount]);
@@ -62,7 +62,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	{
 		theFontMgr->addFont(fontList[fonts], fontsToUse[fonts], 48);
 	}
-	gameTextList = { "Time remaining:" , "Score: " };
+	gameTextList = { "Time remaining:"  , "Score: " };
 	
 	theTextureMgr->addTexture("Title", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, gameTextList[0], SOLID, { 0, 0, 0, 255 }, { 0, 0, 0, 0 }));
 	theTextureMgr->addTexture("Score", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, gameTextList[1], SOLID, { 0, 0, 0, 255 }, { 0, 0, 0, 0 }));
@@ -191,26 +191,22 @@ void cGame::update(double deltaTime)
 			++bulletIterartor;
 		}
 	}
+
+
 	/*
 	==============================================================
 	| Check for collisions
 	==============================================================
 	*/
-	for (vector<cBullet*>::iterator bulletIterartor = theBullets.begin(); bulletIterartor != theBullets.end(); ++bulletIterartor)
+	//for (vector<cBullet*>::iterator bulletIterartor = theBullets.begin(); bulletIterartor != theBullets.end(); ++bulletIterartor)
 	{
-		//(*bulletIterartor)->update(deltaTime);
-		for (vector<cAsteroid*>::iterator asteroidIterator = theAsteroids.begin(); asteroidIterator != theAsteroids.end(); ++asteroidIterator)
-		{
-			if ((*asteroidIterator)->collidedWith(&(*asteroidIterator)->getBoundingRect(), &(*bulletIterartor)->getBoundingRect()))
+			if (theWizard.getBoundingRect().x > theBullet.getBoundingRect().x)
 			{
 				// if a collision set the bullet and asteroid to false
-				(*asteroidIterator)->setActive(false);
 				(*bulletIterartor)->setActive(false);
 				theSoundMgr->getSnd("explosion")->play(0);
 			}
-		}
 	}
-
 
 	// Update the Rockets position
 	theWizard.update(deltaTime);
@@ -231,6 +227,31 @@ bool cGame::getInput(bool theLoop)
 		theWizard.setSpritePos({ theWizard.getSpritePos().x - 15, theWizard.getSpritePos().y });
 	}
 
+	if (keystate[SDL_SCANCODE_SPACE])
+	{
+		theBullets.push_back(new cBullet);
+		int numBullets = theBullets.size() - 1;
+		theBullets[numBullets]->setSpritePos({ rand() % (theWizard.getSpritePos().x + 470) + (theWizard.getSpritePos().x - 470) , 200 });
+		if (theBullets[numBullets]->getSpritePos().x < 0)
+		{
+			theBullets[numBullets]->setSpritePos({ rand() % 670 + 0, 200 });
+		}
+
+		if (theBullets[numBullets]->getSpritePos().x > 940)
+		{
+			theBullets[numBullets]->setSpritePos({ rand() % 940 + 270, 200 });
+		}
+
+		theBullets[numBullets]->setSpriteTranslation({ 2, -6 });
+		theBullets[numBullets]->setTexture(theTextureMgr->getTexture(textureName[rand() % 3 + 7]));
+		theBullets[numBullets]->setSpriteDimensions(theTextureMgr->getTexture("orange")->getTWidth(), theTextureMgr->getTexture("orange")->getTHeight());
+		theBullets[numBullets]->setBulletVelocity({ 2, 2 });
+		theBullets[numBullets]->setSpriteRotAngle(theWizard.getSpriteRotAngle());
+		theBullets[numBullets]->setActive(true);
+		cout << "Bullet added to Vector at position - x: " << theWizard.getBoundingRect().x << " y: " << theWizard.getBoundingRect().y << endl;
+
+		theSoundMgr->getSnd("shot")->play(0);
+	}
 
 	SDL_Event event;
 
@@ -278,63 +299,7 @@ bool cGame::getInput(bool theLoop)
 					theLoop = false;
 					break;
 
-				/*case SDLK_DOWN:
-				{
-					if (theWizard.getSpritePos().x < (renderWidth - theWizard.getSpritePos().w))
-					{
-						theWizard.setSpriteTranslation({ -5, -5 });
-					}
-				}
-				break;
 
-				case SDLK_UP:
-				{
-					if (theWizard.getSpritePos().x > 0)
-					{
-						theWizard.setSpriteTranslation({ 5, 5 });
-					}
-				}
-				break;
-				*/
-
-				case SDLK_RIGHT:
-				{
-					//theWizard.setSpritePos({ theWizard.getSpritePos().x + 8, theWizard.getSpritePos().y });
-					//theWizard.setRocketVelocity({theWizard.getRocketVelocity().x * -30, theWizard.getRocketVelocity().y });
-				}
-				break;
-
-				case SDLK_LEFT:
-				{
-					//theWizard.setSpritePos({ theWizard.getSpritePos().x - 8, theWizard.getSpritePos().y });
-					//theWizard.setRocketVelocity({ theWizard.getRocketVelocity().x * 30, theWizard.getRocketVelocity().y });
-				}
-				break;
-				case SDLK_SPACE:
-				{
-					theBullets.push_back(new cBullet);
-					int numBullets = theBullets.size() - 1;
-					//theBullets[numBullets]->setSpritePos({ rand() % 900 + 5 , 200});
-					theBullets[numBullets]->setSpritePos({ rand() % (theWizard.getSpritePos().x + 470) + (theWizard.getSpritePos().x - 470) , 200 });
-					if (theBullets[numBullets]->getSpritePos().x < 0)
-					{
-						theBullets[numBullets]->setSpritePos({ rand() % 670 + 0, 200 });
-					}
-
-					if (theBullets[numBullets]->getSpritePos().x > 940)
-					{
-						theBullets[numBullets]->setSpritePos({ rand() % 940 + 270, 200 });
-					}
-
-					theBullets[numBullets]->setSpriteTranslation({ 2, -6 });
-					theBullets[numBullets]->setTexture(theTextureMgr->getTexture("apple"));
-					theBullets[numBullets]->setSpriteDimensions(theTextureMgr->getTexture("apple")->getTWidth(), theTextureMgr->getTexture("apple")->getTHeight());
-					theBullets[numBullets]->setBulletVelocity({ 2, 2 });
-					theBullets[numBullets]->setSpriteRotAngle(theWizard.getSpriteRotAngle());
-					theBullets[numBullets]->setActive(true);
-					cout << "Bullet added to Vector at position - x: " << theWizard.getBoundingRect().x << " y: " << theWizard.getBoundingRect().y << endl;
-				}
-				theSoundMgr->getSnd("shot")->play(0);
 				break;
 				default:
 					break;

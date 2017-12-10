@@ -51,6 +51,7 @@ private:
 	vector<LPCSTR> texturesToUse;
 	vector<cAsteroid*> theAsteroids;
 	vector<cBullet*> theBullets;
+	vector<cRocket*> theWizardVector;
 	// Fonts to use
 	vector<LPCSTR> fontList;
 	vector<LPCSTR> fontsToUse;
