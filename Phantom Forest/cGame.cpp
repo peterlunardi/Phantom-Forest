@@ -5,6 +5,7 @@ cGame.cpp
 */
 #include "cGame.h"
 
+
 cGame* cGame::pInstance = NULL;
 static cTextureMgr* theTextureMgr = cTextureMgr::getInstance();
 static cFontMgr* theFontMgr = cFontMgr::getInstance();
@@ -177,6 +178,9 @@ void cGame::update(double deltaTime)
 			++asteroidIterator;
 		}
 	}
+
+
+
 	// Update the visibility and position of each bullet
 	vector<cBullet*>::iterator bulletIterartor = theBullets.begin();
 	while (bulletIterartor != theBullets.end())
@@ -213,7 +217,39 @@ void cGame::update(double deltaTime)
 
 	// Update the Rockets position
 	theWizard.update(deltaTime);
+
+	//Spawn fruit every second
+	for (int i = 0; i < 1; i++)
+	{
+
+		theBullets.push_back(new cBullet);
+		int numBullets = theBullets.size() - 1;
+		theBullets[numBullets]->setSpritePos({ rand() % (theWizard.getSpritePos().x + 470) + (theWizard.getSpritePos().x - 470) , 200 });
+		if (theBullets[numBullets]->getSpritePos().x < 0)
+		{
+			theBullets[numBullets]->setSpritePos({ rand() % 670 + 0, 200 });
+		}
+
+		if (theBullets[numBullets]->getSpritePos().x > 940)
+		{
+			theBullets[numBullets]->setSpritePos({ rand() % 940 + 270, 200 });
+		}
+
+		theBullets[numBullets]->setSpriteTranslation({ 2, -6 });
+		theBullets[numBullets]->setTexture(theTextureMgr->getTexture(textureName[rand() % 3 + 7]));
+		theBullets[numBullets]->setSpriteDimensions(theTextureMgr->getTexture("orange")->getTWidth(), theTextureMgr->getTexture("orange")->getTHeight());
+		theBullets[numBullets]->setBulletVelocity({ 2, 2 });
+		theBullets[numBullets]->setSpriteRotAngle(theWizard.getSpriteRotAngle());
+		theBullets[numBullets]->setActive(true);
+		cout << "Bullet added to Vector at position - x: " << theWizard.getBoundingRect().x << " y: " << theWizard.getBoundingRect().y << endl;
+
+		theSoundMgr->getSnd("shot")->play(0);
+
+
+	}
 }
+
+
 
 bool cGame::getInput(bool theLoop)
 {
@@ -306,28 +342,7 @@ bool cGame::getInput(bool theLoop)
 
 				case SDLK_SPACE:
 				{
-					theBullets.push_back(new cBullet);
-					int numBullets = theBullets.size() - 1;
-					theBullets[numBullets]->setSpritePos({ rand() % (theWizard.getSpritePos().x + 470) + (theWizard.getSpritePos().x - 470) , 200 });
-					if (theBullets[numBullets]->getSpritePos().x < 0)
-					{
-						theBullets[numBullets]->setSpritePos({ rand() % 670 + 0, 200 });
-					}
 
-					if (theBullets[numBullets]->getSpritePos().x > 940)
-					{
-						theBullets[numBullets]->setSpritePos({ rand() % 940 + 270, 200 });
-					}
-
-					theBullets[numBullets]->setSpriteTranslation({ 2, -6 });
-					theBullets[numBullets]->setTexture(theTextureMgr->getTexture(textureName[rand() % 3 + 7]));
-					theBullets[numBullets]->setSpriteDimensions(theTextureMgr->getTexture("orange")->getTWidth(), theTextureMgr->getTexture("orange")->getTHeight());
-					theBullets[numBullets]->setBulletVelocity({ 2, 2 });
-					theBullets[numBullets]->setSpriteRotAngle(theWizard.getSpriteRotAngle());
-					theBullets[numBullets]->setActive(true);
-					cout << "Bullet added to Vector at position - x: " << theWizard.getBoundingRect().x << " y: " << theWizard.getBoundingRect().y << endl;
-
-					theSoundMgr->getSnd("shot")->play(0);
 				}
 
 				break;

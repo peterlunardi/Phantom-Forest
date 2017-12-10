@@ -8,6 +8,7 @@ cGame.h
 */
 
 #include <SDL.h>
+#include <dos.h>
 
 // Game specific includes
 #include "asteroidsGame.h"
