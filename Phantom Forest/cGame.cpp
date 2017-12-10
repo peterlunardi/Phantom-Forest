@@ -69,9 +69,9 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 
 
 	// Load game sounds
-	soundList = { "theme", "shot", "explosion" };
-	soundTypes = { MUSIC, SFX, SFX };
-	soundsToUse = { "Audio/BackgroundTheme.wav", "Audio/shot007.wav", "Audio/explosion2.wav" };
+	soundList = { "theme", "shot", "explosion", "fruitCollect" };
+	soundTypes = { MUSIC, SFX, SFX, SFX };
+	soundsToUse = { "Audio/BackgroundTheme.wav", "Audio/shot007.wav", "Audio/explosion2.wav", "Audio/fruitcollect.wav" };
 	for (int sounds = 0; sounds < soundList.size(); sounds++)
 	{
 		theSoundMgr->add(soundList[sounds], soundsToUse[sounds], soundTypes[sounds]);
@@ -206,7 +206,7 @@ void cGame::update(double deltaTime)
 			{
 				// if a collision set the bullet and asteroid to false
 				(*bulletIterartor)->setActive(false);
-				theSoundMgr->getSnd("explosion")->play(0);
+				theSoundMgr->getSnd("fruitCollect")->play(0);
 			}
 
 	}
