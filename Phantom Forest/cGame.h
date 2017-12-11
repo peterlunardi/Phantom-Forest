@@ -9,6 +9,7 @@ cGame.h
 
 #include <SDL.h>
 #include <dos.h>
+#include <time.h>
 
 // Game specific includes
 #include "asteroidsGame.h"
@@ -41,6 +42,8 @@ private:
 	time_point< high_resolution_clock > m_CurrentTime;
 	duration< double > deltaTime;
 
+	time_t startTime = time(NULL);
+
 	// Sprites for displaying background and rocket textures
 	cSprite spriteBkgd;
 	cRocket theWizard;
@@ -53,6 +56,7 @@ private:
 	vector<cAsteroid*> theAsteroids;
 	vector<cBullet*> theBullets;
 	vector<cRocket*> theWizardVector;
+	int playerScore = 0;
 	// Fonts to use
 	vector<LPCSTR> fontList;
 	vector<LPCSTR> fontsToUse;

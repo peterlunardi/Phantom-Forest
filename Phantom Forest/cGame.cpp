@@ -12,6 +12,7 @@ static cFontMgr* theFontMgr = cFontMgr::getInstance();
 static cSoundMgr* theSoundMgr = cSoundMgr::getInstance();
 
 
+
 /*
 =================================================================================
 Constructor
@@ -38,6 +39,9 @@ cGame* cGame::getInstance()
 
 void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 {
+
+
+
 	// Get width and height of render context
 	SDL_GetRendererOutputSize(theRenderer, &renderWidth, &renderHeight);
 	this->m_lastTime = high_resolution_clock::now();
@@ -124,6 +128,8 @@ void cGame::run(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 
 void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 {
+
+
 	SDL_RenderClear(theRenderer);
 	spriteBkgd.render(theRenderer, NULL, NULL, spriteBkgd.getSpriteScale());
 	// Render each asteroid in the vector array
@@ -142,10 +148,17 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	FPoint scale = { 1, 1 };
 	tempTextTexture->renderTexture(theRenderer, tempTextTexture->getTexture(), &tempTextTexture->getTextureRect(), &pos, scale);
 	// Render the score
-	cTexture* tempScoreTexture = theTextureMgr->getTexture("Score");
-	SDL_Rect posScore = { 600, 10, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
-	FPoint scaleScore = { 1, 1 };
-	tempTextTexture->renderTexture(theRenderer, tempScoreTexture->getTexture(), &tempTextTexture->getTextureRect(), &posScore, scaleScore);
+	string theScore = "Score: " + std::to_string(playerScore);
+	OutputDebugString(theScore.c_str());
+	theTextureMgr->addTexture("playerScore", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, theScore.c_str(), SOLID, { 0, 255, 0, 255 }, { 0, 0, 0, 255 }));
+	cTexture* playerScoreTexture = theTextureMgr->getTexture("playerScore");
+	SDL_Rect scorePos = { 600, 10, playerScoreTexture->getTextureRect().w, playerScoreTexture->getTextureRect().h };
+	FPoint scoreScale = { 1,1 };
+	playerScoreTexture->renderTexture(theRenderer, playerScoreTexture->getTexture(), &playerScoreTexture->getTextureRect(), &scorePos, scoreScale);
+	//cTexture* tempScoreTexture = theTextureMgr->getTexture("Score");
+	//SDL_Rect posScore = { 600, 10, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
+	//FPoint scaleScore = { 1, 1 };
+	//tempTextTexture->renderTexture(theRenderer, tempScoreTexture->getTexture(), &tempTextTexture->getTextureRect(), &posScore, scaleScore);
 	// render the rocket
 	theWizard.render(theRenderer, &theWizard.getSpriteDimensions(), &theWizard.getSpritePos(), theWizard.getSpriteRotAngle(), &theWizard.getSpriteCentre(), theWizard.getSpriteScale());
 	SDL_RenderPresent(theRenderer);
@@ -164,6 +177,9 @@ void cGame::update()
 
 void cGame::update(double deltaTime)
 {
+
+
+
 	// Update the visibility and position of each asteriod
 	vector<cAsteroid*>::iterator asteroidIterator = theAsteroids.begin();
 	while (asteroidIterator != theAsteroids.end())
@@ -211,6 +227,9 @@ void cGame::update(double deltaTime)
 				// if a collision set the bullet and asteroid to false
 				(*bulletIterartor)->setActive(false);
 				theSoundMgr->getSnd("fruitCollect")->play(0);
+				playerScore++;
+				theTextureMgr->deleteTexture("playerScore");
+
 			}
 
 			//remove any ingredients that reach the bottom of the screen without colliding with player
@@ -224,10 +243,14 @@ void cGame::update(double deltaTime)
 	// Update the Rockets position
 	theWizard.update(deltaTime);
 
-	//Spawn fruit every second
-	for (int i = 0; i < 1; i++)
-	{
+	//OutputDebugString((std::to_string((double)time(NULL)*deltaTime - (double)startTime*deltaTime).c_str()));
+	//OutputDebugString("Hello");
 
+	//Spawn fruit every second
+
+	if ((time(NULL)*deltaTime - startTime*deltaTime) >= 0.01)
+	{
+		
 		theBullets.push_back(new cBullet);
 		int numBullets = theBullets.size() - 1;
 		theBullets[numBullets]->setSpritePos({ rand() % (theWizard.getSpritePos().x + 470) + (theWizard.getSpritePos().x - 470) , 200 });
@@ -241,7 +264,7 @@ void cGame::update(double deltaTime)
 			theBullets[numBullets]->setSpritePos({ rand() % 940 + 270, 200 });
 		}
 
-		theBullets[numBullets]->setSpriteTranslation({ 2, -6 });
+		theBullets[numBullets]->setSpriteTranslation({ 2, -10 });
 		theBullets[numBullets]->setTexture(theTextureMgr->getTexture(textureName[rand() % 3 + 7]));
 		theBullets[numBullets]->setSpriteDimensions(theTextureMgr->getTexture("orange")->getTWidth(), theTextureMgr->getTexture("orange")->getTHeight());
 		theBullets[numBullets]->setBulletVelocity({ 2, 2 });
@@ -252,6 +275,11 @@ void cGame::update(double deltaTime)
 		theSoundMgr->getSnd("shot")->play(0);
 
 
+
+		//OutputDebugString((std::to_string((double)time(NULL)*deltaTime - (double)startTime*deltaTime).c_str()));
+		//OutputDebugString("Hello");
+
+		startTime = time(NULL);
 	}
 }
 
