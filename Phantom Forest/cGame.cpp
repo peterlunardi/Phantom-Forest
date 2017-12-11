@@ -68,10 +68,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	{
 		theFontMgr->addFont(fontList[fonts], fontsToUse[fonts], 48);
 	}
-	gameTextList = { "Time remaining:"  , "Score: " };
-	
-	theTextureMgr->addTexture("Title", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, gameTextList[0], SOLID, { 0, 0, 0, 255 }, { 0, 0, 0, 0 }));
-	theTextureMgr->addTexture("Score", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, gameTextList[1], SOLID, { 0, 0, 0, 255 }, { 0, 0, 0, 0 }));
+
 
 
 	// Load game sounds
@@ -145,23 +142,22 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	}
 
 	// Render the Title
-	cTexture* tempTextTexture = theTextureMgr->getTexture("Title");
-	SDL_Rect pos = { 10, 10, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
-	FPoint scale = { 1, 1 };
-	tempTextTexture->renderTexture(theRenderer, tempTextTexture->getTexture(), &tempTextTexture->getTextureRect(), &pos, scale);
+	string timeRemaining = "Time remaining: " + std::to_string(timeLeft);
+	theTextureMgr->addTexture("timeLeft", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, timeRemaining.c_str(), SOLID, { 0, 0, 0, 255 }, { 0, 0, 0, 255 }));
+	cTexture* timeLeftTexture = theTextureMgr->getTexture("timeLeft");
+	SDL_Rect timePos = { 30, 10, timeLeftTexture->getTextureRect().w, timeLeftTexture->getTextureRect().h };
+	FPoint timeScale = { 1,1 };
+	timeLeftTexture->renderTexture(theRenderer, timeLeftTexture->getTexture(), &timeLeftTexture->getTextureRect(), &timePos, timeScale);
+
 
 	// Render the score
 	string theScore = "Score: " + std::to_string(playerScore);
-	//OutputDebugString(theScore.c_str());
-	theTextureMgr->addTexture("playerScore", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, theScore.c_str(), SOLID, { 0, 0, 0, 255 }, { 0, 0, 0, 255 }));
+	theTextureMgr->addTexture("playerScore", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, theScore.c_str(), SOLID, { 155, 0, 0, 255 }, { 0, 0, 0, 255 }));
 	cTexture* playerScoreTexture = theTextureMgr->getTexture("playerScore");
 	SDL_Rect scorePos = { 800, 10, playerScoreTexture->getTextureRect().w, playerScoreTexture->getTextureRect().h };
 	FPoint scoreScale = { 1,1 };
 	playerScoreTexture->renderTexture(theRenderer, playerScoreTexture->getTexture(), &playerScoreTexture->getTextureRect(), &scorePos, scoreScale);
-	//cTexture* tempScoreTexture = theTextureMgr->getTexture("Score");
-	//SDL_Rect posScore = { 600, 10, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
-	//FPoint scaleScore = { 1, 1 };
-	//tempTextTexture->renderTexture(theRenderer, tempScoreTexture->getTexture(), &tempTextTexture->getTextureRect(), &posScore, scaleScore);
+
 
 	// render the rocket
 	theWizard.render(theRenderer, &theWizard.getSpriteDimensions(), &theWizard.getSpritePos(), theWizard.getSpriteRotAngle(), &theWizard.getSpriteCentre(), theWizard.getSpriteScale());
@@ -244,19 +240,34 @@ void cGame::update(double deltaTime)
 
 	}
 
-	// Update the Rockets position
+	// Update the wizards position
 	theWizard.update(deltaTime);
 
 
 	OutputDebugString((std::to_string(GetTickCount() - startTicks).c_str()));
 	OutputDebugString("\n");
 
-
+	if (timeLeft > 40)
+	{
+		spawnRate = 750;
+	}
+	if (timeLeft > 20 && timeLeft < 40)
+	{
+		spawnRate = 500;
+	}
+	if (timeLeft < 20)
+	{
+		spawnRate = 250;
+	}
+	if (timeLeft == 0)
+	{
+		
+	}
 
 
 	//Spawn fruit in set intervals
 
-	if (GetTickCount() - startTicks >= 250)
+	if (GetTickCount() - startTicks >= spawnRate)
 	{
 		
 		theBullets.push_back(new cBullet);
@@ -285,9 +296,13 @@ void cGame::update(double deltaTime)
 		startTicks = GetTickCount();  //reset startTicks back up to the current tick count
 
 	}
-	else
+
+	//Timer
+	if (GetTickCount() - timerTicks >= 1000)
 	{
-		return;
+		timeLeft--;
+		timerTicks = GetTickCount();
+		theTextureMgr->deleteTexture("timeLeft");
 	}
 }
 
