@@ -32,6 +32,8 @@ public:
 	bool getInput(bool theLoop);
 	double getElapsedSeconds();
 
+	double startTicks = GetTickCount();
+
 	static cGame* getInstance();
 
 private:
@@ -42,7 +44,7 @@ private:
 	time_point< high_resolution_clock > m_CurrentTime;
 	duration< double > deltaTime;
 
-	time_t startTime = time(NULL);
+
 
 	// Sprites for displaying background and rocket textures
 	cSprite spriteBkgd;
