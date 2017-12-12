@@ -92,7 +92,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 
 	// Create text Textures
 	gameTextNames = { "TitleTxt", "CreateTxt", "DragDropTxt", "ThanksTxt", "SeeYouTxt" };
-	gameTextList = { "Maze Maker", "Create your own Maze!", "Drag and Drop the tiles.", "Thanks for playing!", "See you again soon!" };
+	gameTextList = { "PHANTOM FOREST", "Catch the falling ingredients!", "Left and Right arrow keys to move", "Thanks for playing!", "See you again soon!" };
 	for (int text = 0; text < gameTextNames.size(); text++)
 	{
 		theTextureMgr->addTexture(gameTextNames[text], theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, gameTextList[text], SOLID, { 228, 213, 238, 255 }, { 0, 0, 0, 0 }));
@@ -179,12 +179,8 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	break;
 	case PLAYING:
 	{
+
 		spriteBkgd.render(theRenderer, NULL, NULL, spriteBkgd.getSpriteScale());
-		// Render each asteroid in the vector array
-		for (int draw = 0; draw < theAsteroids.size(); draw++)
-		{
-			theAsteroids[draw]->render(theRenderer, &theAsteroids[draw]->getSpriteDimensions(), &theAsteroids[draw]->getSpritePos(), theAsteroids[draw]->getSpriteRotAngle(), &theAsteroids[draw]->getSpriteCentre(), theAsteroids[draw]->getSpriteScale());
-		}
 		// Render each bullet in the vector array
 		for (int draw = 0; draw < theBullets.size(); draw++)
 		{
@@ -208,6 +204,7 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 		FPoint scoreScale = { 1,1 };
 		playerScoreTexture->renderTexture(theRenderer, playerScoreTexture->getTexture(), &playerScoreTexture->getTextureRect(), &scorePos, scoreScale);
 
+		theTextureMgr->deleteTexture("playerScore");
 
 		// render the rocket
 		theWizard.render(theRenderer, &theWizard.getSpriteDimensions(), &theWizard.getSpritePos(), theWizard.getSpriteRotAngle(), &theWizard.getSpriteCentre(), theWizard.getSpriteScale());
@@ -215,7 +212,30 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	break;
 	case END:
 	{
-	
+		string theScore = "Score: " + std::to_string(playerScore);
+		spriteBkgd.render(theRenderer, NULL, NULL, spriteBkgd.getSpriteScale());
+		tempTextTexture = theTextureMgr->getTexture("TitleTxt");
+		pos = { 10, 10, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
+		tempTextTexture->renderTexture(theRenderer, tempTextTexture->getTexture(), &tempTextTexture->getTextureRect(), &pos, scale);
+
+		tempTextTexture = theTextureMgr->getTexture("ThanksTxt");
+		pos = { 300, 10, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
+		tempTextTexture->renderTexture(theRenderer, tempTextTexture->getTexture(), &tempTextTexture->getTextureRect(), &pos, scale);
+
+		tempTextTexture = theTextureMgr->getTexture("SeeYouTxt");
+		pos = { 300, 75, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
+		tempTextTexture->renderTexture(theRenderer, tempTextTexture->getTexture(), &tempTextTexture->getTextureRect(), &pos, scale);
+
+		theTextureMgr->addTexture("playerScore", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, theScore.c_str(), SOLID, { 155, 0, 0, 255 }, { 0, 0, 0, 255 }));
+		cTexture* playerScoreTexture = theTextureMgr->getTexture("playerScore");
+		SDL_Rect scorePos = { 300, 140, playerScoreTexture->getTextureRect().w, playerScoreTexture->getTextureRect().h };
+		FPoint scoreScale = { 1,1 };
+		playerScoreTexture->renderTexture(theRenderer, playerScoreTexture->getTexture(), &playerScoreTexture->getTextureRect(), &scorePos, scoreScale);
+
+		theButtonMgr->getBtn("menu_btn")->setSpritePos({ 500, 500 });
+		theButtonMgr->getBtn("menu_btn")->render(theRenderer, &theButtonMgr->getBtn("menu_btn")->getSpriteDimensions(), &theButtonMgr->getBtn("menu_btn")->getSpritePos(), theButtonMgr->getBtn("menu_btn")->getSpriteScale());
+		theButtonMgr->getBtn("exit_btn")->setSpritePos({ 500, 575 });
+		theButtonMgr->getBtn("exit_btn")->render(theRenderer, &theButtonMgr->getBtn("exit_btn")->getSpriteDimensions(), &theButtonMgr->getBtn("exit_btn")->getSpritePos(), theButtonMgr->getBtn("exit_btn")->getSpriteScale());
 	}
 	break;
 	case QUIT:
@@ -246,29 +266,15 @@ void cGame::update(double deltaTime)
 	{
 	case MENU:
 	{
+		theWizard.setSpritePos({ 470, 600 });
+		timeLeft = 5;
+		playerScore = 0;
 		theGameState = theButtonMgr->getBtn("exit_btn")->update(theGameState, QUIT, theAreaClicked);
 		theGameState = theButtonMgr->getBtn("play_btn")->update(theGameState, PLAYING, theAreaClicked);
 	}
 	break;
 	case PLAYING:
 	{
-		// Update the visibility and position of each asteriod
-		vector<cAsteroid*>::iterator asteroidIterator = theAsteroids.begin();
-		while (asteroidIterator != theAsteroids.end())
-		{
-			if ((*asteroidIterator)->isActive() == false)
-			{
-				asteroidIterator = theAsteroids.erase(asteroidIterator);
-			}
-			else
-			{
-				(*asteroidIterator)->update(deltaTime);
-				++asteroidIterator;
-			}
-		}
-
-
-
 		// Update the visibility and position of each bullet
 		vector<cBullet*>::iterator bulletIterartor = theBullets.begin();
 		while (bulletIterartor != theBullets.end())
@@ -300,7 +306,7 @@ void cGame::update(double deltaTime)
 				(*bulletIterartor)->setActive(false);
 				theSoundMgr->getSnd("fruitCollect")->play(0);
 				playerScore++;
-				theTextureMgr->deleteTexture("playerScore");
+				//theTextureMgr->deleteTexture("playerScore");
 
 			}
 
@@ -329,12 +335,11 @@ void cGame::update(double deltaTime)
 		}
 		if (timeLeft == 0)
 		{
-			loop = false;
+			theGameState = END;
 		}
 
 
 		//Spawn fruit in set intervals
-
 		if (GetTickCount() - startTicks >= spawnRate)
 		{
 
