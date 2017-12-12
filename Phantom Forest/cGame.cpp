@@ -42,8 +42,6 @@ cGame* cGame::getInstance()
 void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 {
 
-
-
 	// Get width and height of render context
 	SDL_GetRendererOutputSize(theRenderer, &renderWidth, &renderHeight);
 	this->m_lastTime = high_resolution_clock::now();
@@ -179,9 +177,9 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	break;
 	case PLAYING:
 	{
-
 		spriteBkgd.render(theRenderer, NULL, NULL, spriteBkgd.getSpriteScale());
 		// Render each bullet in the vector array
+
 		for (int draw = 0; draw < theBullets.size(); draw++)
 		{
 			theBullets[draw]->render(theRenderer, &theBullets[draw]->getSpriteDimensions(), &theBullets[draw]->getSpritePos(), theBullets[draw]->getSpriteRotAngle(), &theBullets[draw]->getSpriteCentre(), theBullets[draw]->getSpriteScale());
@@ -262,12 +260,28 @@ void cGame::update()
 
 void cGame::update(double deltaTime)
 {
+
+	// Update the visibility and position of each bullet
+	vector<cBullet*>::iterator bulletIterartor = theBullets.begin();
+	while (bulletIterartor != theBullets.end())
+	{
+		if ((*bulletIterartor)->isActive() == false)
+		{
+			bulletIterartor = theBullets.erase(bulletIterartor);
+		}
+		else
+		{
+			(*bulletIterartor)->update(deltaTime);
+			++bulletIterartor;
+		}
+	}
+
 	switch (theGameState)
 	{
 	case MENU:
 	{
 		theWizard.setSpritePos({ 470, 600 });
-		timeLeft = 5;
+		timeLeft = 60;
 		playerScore = 0;
 		theGameState = theButtonMgr->getBtn("exit_btn")->update(theGameState, QUIT, theAreaClicked);
 		theGameState = theButtonMgr->getBtn("play_btn")->update(theGameState, PLAYING, theAreaClicked);
@@ -275,20 +289,7 @@ void cGame::update(double deltaTime)
 	break;
 	case PLAYING:
 	{
-		// Update the visibility and position of each bullet
-		vector<cBullet*>::iterator bulletIterartor = theBullets.begin();
-		while (bulletIterartor != theBullets.end())
-		{
-			if ((*bulletIterartor)->isActive() == false)
-			{
-				bulletIterartor = theBullets.erase(bulletIterartor);
-			}
-			else
-			{
-				(*bulletIterartor)->update(deltaTime);
-				++bulletIterartor;
-			}
-		}
+
 
 
 		/*
@@ -302,16 +303,15 @@ void cGame::update(double deltaTime)
 
 			if (theWizard.collidedWith(&(&theWizard)->getBoundingRect(), &(*bulletIterartor)->getBoundingRect()))
 			{
-				// if a collision set the bullet and asteroid to false
+				// if a collision set the bullet to false
 				(*bulletIterartor)->setActive(false);
 				theSoundMgr->getSnd("fruitCollect")->play(0);
 				playerScore++;
-				//theTextureMgr->deleteTexture("playerScore");
 
 			}
 
 			//remove any ingredients that reach the bottom of the screen without colliding with player
-			if ((*bulletIterartor)->getBoundingRect().y > 1000)
+			if ((*bulletIterartor)->getBoundingRect().y > 1000 || timeLeft <= 0)
 			{
 				(*bulletIterartor)->setActive(false);
 			}
@@ -320,20 +320,32 @@ void cGame::update(double deltaTime)
 
 		// Update the wizards position
 		theWizard.update(deltaTime);
+		if (theWizard.getSpritePos().x > 900)
+		{
+			theWizard.setSpritePos({ 900, theWizard.getSpritePos().y });
+		}
+		if (theWizard.getSpritePos().x < -50)
+		{
+			theWizard.setSpritePos({ -50, theWizard.getSpritePos().y });
+		}
 
-		if (timeLeft > 40)
+		if (timeLeft > 40  && timeLeft < 58)
 		{
 			spawnRate = 750;
 		}
-		if (timeLeft > 20 && timeLeft < 40)
+		else
+		{
+			spawnRate = 10000;
+		}
+		if (timeLeft > 20 && timeLeft <= 40)
 		{
 			spawnRate = 500;
 		}
-		if (timeLeft < 20)
+		if (timeLeft <= 20)
 		{
 			spawnRate = 250;
 		}
-		if (timeLeft == 0)
+		if (timeLeft <= 0)
 		{
 			theGameState = END;
 		}
@@ -402,15 +414,20 @@ bool cGame::getInput(bool theLoop)
 
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
-	if (keystate[SDL_SCANCODE_RIGHT])
-	{
-		theWizard.setSpritePos({ theWizard.getSpritePos().x + 15, theWizard.getSpritePos().y });
-	}
 
-	if (keystate[SDL_SCANCODE_LEFT])
-	{
+		if (keystate[SDL_SCANCODE_RIGHT])
+		{
+	
+			theWizard.setSpritePos({ theWizard.getSpritePos().x + 15, theWizard.getSpritePos().y });
+		
+		}
+
+		if (keystate[SDL_SCANCODE_LEFT])
+		{
 		theWizard.setSpritePos({ theWizard.getSpritePos().x - 15, theWizard.getSpritePos().y });
-	}
+		}
+
+
 
 	/*
 	if (keystate[SDL_SCANCODE_SPACE])

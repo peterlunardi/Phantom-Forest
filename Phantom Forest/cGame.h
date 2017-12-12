@@ -64,7 +64,7 @@ private:
 	vector<cBullet*> theBullets;
 	vector<cRocket*> theWizardVector;
 	int playerScore = 0;
-	int timeLeft = 5;
+	int timeLeft = 60;
 	// Fonts to use
 	vector<LPCSTR> fontList;
 	vector<LPCSTR> fontsToUse;
