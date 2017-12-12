@@ -65,7 +65,7 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	fontsToUse = { "Fonts/digital-7.ttf", "Fonts/space age.ttf", "Fonts/Amatic-Bold.ttf" };
 	for (int fonts = 0; fonts < fontList.size(); fonts++)
 	{
-		theFontMgr->addFont(fontList[fonts], fontsToUse[fonts], 48);
+		theFontMgr->addFont(fontList[fonts], fontsToUse[fonts], 64);
 	}
 
 
@@ -329,29 +329,22 @@ void cGame::update(double deltaTime)
 			theWizard.setSpritePos({ -50, theWizard.getSpritePos().y });
 		}
 
-		if (timeLeft > 40  && timeLeft < 58)
-		{
-			spawnRate = 750;
-		}
-		else
-		{
-			spawnRate = 10000;
-		}
-		if (timeLeft > 20 && timeLeft <= 40)
-		{
-			spawnRate = 500;
-		}
-		if (timeLeft <= 20)
-		{
-			spawnRate = 250;
-		}
 		if (timeLeft <= 0)
 		{
 			theGameState = END;
 		}
 
+		OutputDebugString(std::to_string(spawnRate).c_str());
+		OutputDebugString("\n");
 
-		//Spawn fruit in set intervals
+		
+		//SPAWN FRUIT AT A CERTAIN RATE
+		//rate of spawn is proportional to the time remaining up until a certain point
+		spawnRate = timeLeft * 16;
+		if (spawnRate < 300)
+		{
+			spawnRate = 300;
+		}
 		if (GetTickCount() - startTicks >= spawnRate)
 		{
 

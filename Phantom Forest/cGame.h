@@ -36,7 +36,7 @@ public:
 	double startTicks = GetTickCount();
 	double timerTicks = GetTickCount();
 
-	int spawnRate = 0;
+	
 
 	static cGame* getInstance();
 
@@ -65,6 +65,7 @@ private:
 	vector<cRocket*> theWizardVector;
 	int playerScore = 0;
 	int timeLeft = 60;
+	int spawnRate;
 	// Fonts to use
 	vector<LPCSTR> fontList;
 	vector<LPCSTR> fontsToUse;
