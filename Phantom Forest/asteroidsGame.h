@@ -12,5 +12,7 @@
 #include "cRocket.h"
 #include "cFontMgr.h"
 #include "cSoundMgr.h"
+#include "cButton.h"
+#include "cButtonMgr.h"
 
 #endif

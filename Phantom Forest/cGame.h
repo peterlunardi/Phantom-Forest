@@ -31,6 +31,7 @@ public:
 	void update(double deltaTime);
 	bool getInput(bool theLoop);
 	double getElapsedSeconds();
+	bool loop;
 
 	double startTicks = GetTickCount();
 	double timerTicks = GetTickCount();
@@ -58,6 +59,7 @@ private:
 	vector<LPCSTR> textureName;
 	vector<LPCSTR> textName;
 	vector<LPCSTR> texturesToUse;
+	vector<LPCSTR> gameTextNames;
 	vector<cAsteroid*> theAsteroids;
 	vector<cBullet*> theBullets;
 	vector<cRocket*> theWizardVector;
@@ -75,6 +77,17 @@ private:
 	// Game objects
 	// Define the elements and there position in/on the array/map
 	int renderWidth, renderHeight;
+	// Create vector array of button textures
+	vector<LPCSTR> btnNameList;
+	vector<LPCSTR> btnTexturesToUse;
+	vector<SDL_Point> btnPos;
+	vector <cButton> theButtons;
+	gameState theGameState;
+	cTexture* tempTextTexture;
+	btnTypes theBtnType;
+	SDL_Rect pos;
+	FPoint scale;
+	SDL_Point theAreaClicked;
 };
 
 #endif

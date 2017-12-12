@@ -139,6 +139,8 @@ xcopy /Y "H:\Users\Peter\Desktop\SDL2\SDL2_ttf-2.0.14\lib\x86\*.dll" "$(OutDir)"
     <ClInclude Include="cAsteroid.h" />
     <ClInclude Include="cBkGround.h" />
     <ClInclude Include="cBullet.h" />
+    <ClInclude Include="cButton.h" />
+    <ClInclude Include="cButtonMgr.h" />
     <ClInclude Include="cFont.h" />
     <ClInclude Include="cFontMgr.h" />
     <ClInclude Include="cGame.h" />
@@ -156,6 +158,8 @@ xcopy /Y "H:\Users\Peter\Desktop\SDL2\SDL2_ttf-2.0.14\lib\x86\*.dll" "$(OutDir)"
     <ClCompile Include="cAsteroid.cpp" />
     <ClCompile Include="cBkGround.cpp" />
     <ClCompile Include="cBullet.cpp" />
+    <ClCompile Include="cButton.cpp" />
+    <ClCompile Include="cButtonMgr.cpp" />
     <ClCompile Include="cFont.cpp" />
     <ClCompile Include="cFontMgr.cpp" />
     <ClCompile Include="cGame.cpp" />
