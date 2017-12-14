@@ -136,7 +136,6 @@ xcopy /Y "H:\Users\Peter\Desktop\SDL2\SDL2_ttf-2.0.14\lib\x86\*.dll" "$(OutDir)"
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="asteroidsGame.h" />
-    <ClInclude Include="cAsteroid.h" />
     <ClInclude Include="cBkGround.h" />
     <ClInclude Include="cBullet.h" />
     <ClInclude Include="cButton.h" />
@@ -155,7 +154,6 @@ xcopy /Y "H:\Users\Peter\Desktop\SDL2\SDL2_ttf-2.0.14\lib\x86\*.dll" "$(OutDir)"
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AsteroidsSDL.cpp" />
-    <ClCompile Include="cAsteroid.cpp" />
     <ClCompile Include="cBkGround.cpp" />
     <ClCompile Include="cBullet.cpp" />
     <ClCompile Include="cButton.cpp" />

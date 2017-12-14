@@ -53,14 +53,12 @@ private:
 	// Sprites for displaying background and rocket textures
 	cSprite spriteBkgd;
 	cRocket theWizard;
-	cAsteroid theAsteroid;
 	cBullet theBullet;
 	// game related variables
 	vector<LPCSTR> textureName;
 	vector<LPCSTR> textName;
 	vector<LPCSTR> texturesToUse;
 	vector<LPCSTR> gameTextNames;
-	vector<cAsteroid*> theAsteroids;
 	vector<cBullet*> theBullets;
 	vector<cRocket*> theWizardVector;
 	int playerScore = 0;

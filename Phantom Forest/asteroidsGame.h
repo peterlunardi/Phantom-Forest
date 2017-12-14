@@ -7,7 +7,6 @@
 #include "cBkGround.h"
 #include "cTextureMgr.h"
 #include "cTexture.h"
-#include "cAsteroid.h"
 #include "cBullet.h"
 #include "cRocket.h"
 #include "cFontMgr.h"
