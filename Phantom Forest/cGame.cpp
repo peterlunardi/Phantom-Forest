@@ -91,15 +91,16 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	// Create text Textures
 	gameTextNames = { "TitleTxt", "CreateTxt", "DragDropTxt", "ThanksTxt", "SeeYouTxt" };
 	gameTextList = { "PHANTOM FOREST", "Catch the falling ingredients!", "Left and Right arrow keys to move", "Thanks for playing!", "See you again soon!" };
-	for (int text = 0; text < gameTextNames.size(); text++)
+	for (int text = 1; text < gameTextNames.size(); text++)
 	{
 		theTextureMgr->addTexture(gameTextNames[text], theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, gameTextList[text], SOLID, { 228, 213, 238, 255 }, { 0, 0, 0, 0 }));
 	}
+	theTextureMgr->addTexture("TitleTxt", theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, gameTextList[0], SOLID, { 160,0,0,255 }, { 0,0,0,0 }));
 
 	// Load game sounds
-	soundList = { "theme", "shot", "explosion", "fruitCollect" };
-	soundTypes = { MUSIC, SFX, SFX, SFX };
-	soundsToUse = { "Audio/BackgroundTheme.wav", "Audio/shot007.wav", "Audio/explosion2.wav", "Audio/fruitcollect.wav" };
+	soundList = { "theme", "shot", "explosion", "fruitCollect", "fruitDrop" };
+	soundTypes = { MUSIC, SFX, SFX, SFX, SFX };
+	soundsToUse = { "Audio/BackgroundTheme.wav", "Audio/shot007.wav", "Audio/explosion2.wav", "Audio/fruitcollect.wav", "Audio/fruitdrop.wav" };
 	for (int sounds = 0; sounds < soundList.size(); sounds++)
 	{
 		theSoundMgr->add(soundList[sounds], soundsToUse[sounds], soundTypes[sounds]);
@@ -161,7 +162,7 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 		// Render the Title
 		tempTextTexture = theTextureMgr->getTexture("TitleTxt");
 		pos = { 10, 10, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
-		scale = { 1, 1 };
+		scale = { 2, 2 };
 		tempTextTexture->renderTexture(theRenderer, tempTextTexture->getTexture(), &tempTextTexture->getTextureRect(), &pos, scale);
 		tempTextTexture = theTextureMgr->getTexture("CreateTxt");
 		pos = { 300, 10, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
@@ -178,8 +179,8 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	case PLAYING:
 	{
 		spriteBkgd.render(theRenderer, NULL, NULL, spriteBkgd.getSpriteScale());
-		// Render each bullet in the vector array
 
+		// Render each bullet in the vector array
 		for (int draw = 0; draw < theBullets.size(); draw++)
 		{
 			theBullets[draw]->render(theRenderer, &theBullets[draw]->getSpriteDimensions(), &theBullets[draw]->getSpritePos(), theBullets[draw]->getSpriteRotAngle(), &theBullets[draw]->getSpriteCentre(), theBullets[draw]->getSpriteScale());
@@ -303,7 +304,7 @@ void cGame::update(double deltaTime)
 
 			if (theWizard.collidedWith(&(&theWizard)->getBoundingRect(), &(*bulletIterartor)->getBoundingRect()))
 			{
-				// if a collision set the bullet to false
+				// if a collision set the bullet to false, play a confirming sound and increase player score by 1
 				(*bulletIterartor)->setActive(false);
 				theSoundMgr->getSnd("fruitCollect")->play(0);
 				playerScore++;
@@ -340,14 +341,14 @@ void cGame::update(double deltaTime)
 		
 		//SPAWN FRUIT AT A CERTAIN RATE
 		//rate of spawn is proportional to the time remaining up until a certain point
-		spawnRate = timeLeft * 16;
+		spawnRate = (timeLeft * 16) + rand() % 100 - 0;
 		if (spawnRate < 300)
 		{
 			spawnRate = 300;
 		}
 		if (GetTickCount() - startTicks >= spawnRate)
 		{
-
+			theSoundMgr->getSnd("fruitDrop")->play(0);
 			theBullets.push_back(new cBullet);
 			int numBullets = theBullets.size() - 1;
 			theBullets[numBullets]->setSpritePos({ rand() % (theWizard.getSpritePos().x + 470) + (theWizard.getSpritePos().x - 470) , 200 });
@@ -369,7 +370,7 @@ void cGame::update(double deltaTime)
 			theBullets[numBullets]->setActive(true);
 			cout << "Bullet added to Vector at position - x: " << theWizard.getBoundingRect().x << " y: " << theWizard.getBoundingRect().y << endl;
 
-			theSoundMgr->getSnd("shot")->play(0);
+
 
 			startTicks = GetTickCount();  //reset startTicks back up to the current tick count
 
