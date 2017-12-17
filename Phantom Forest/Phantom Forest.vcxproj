@@ -111,7 +111,7 @@ xcopy /Y "H:\Users\Peter\Desktop\SDL2\SDL2_ttf-2.0.14\lib\x86\*.dll" "$(OutDir)"
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>H:\Users\Peter\Desktop\SDL2\SDL2-2.0.4\lib\x86;H:\Users\Peter\Desktop\SDL2\SDL2_ttf-2.0.14\lib\x86;H:\Users\Peter\Desktop\SDL2\SDL2_mixer-2.0.1\lib\x86;H:\Users\Peter\Desktop\SDL2\SDL2_image-2.0.1\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
       <Command>echo copying SDL2.dll to debug directory

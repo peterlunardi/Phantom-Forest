@@ -88,8 +88,8 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	theBtnType = EXIT;
 
 	// Create text Textures
-	gameTextNames = { "TitleTxt", "CreateTxt", "DragDropTxt", "ThanksTxt", "SeeYouTxt" };
-	gameTextList = { "PHANTOM FOREST", "Catch the falling ingredients!", "Left and Right arrow keys to move", "Thanks for playing!", "See you again soon!" };
+	gameTextNames = { "TitleTxt", "CreateTxt", "DragDropTxt", "GameOverTxt", "ThanksTxt" };
+	gameTextList = { "PHANTOM FOREST", "Catch the falling ingredients!", "Left and Right arrow keys to move", "Game over!", "Thanks for playing!" };
 	for (int text = 1; text < gameTextNames.size(); text++)
 	{
 		theTextureMgr->addTexture(gameTextNames[text], theFontMgr->getFont("Amatic")->createTextTexture(theRenderer, gameTextList[text], SOLID, { 228, 213, 238, 255 }, { 0, 0, 0, 0 }));
@@ -163,6 +163,7 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 
 		// Render play and exit buttons in the main menu
 		theButtonMgr->getBtn("play_btn")->render(theRenderer, &theButtonMgr->getBtn("play_btn")->getSpriteDimensions(), &theButtonMgr->getBtn("play_btn")->getSpritePos(), theButtonMgr->getBtn("play_btn")->getSpriteScale());
+		theButtonMgr->getBtn("exit_btn")->setSpritePos({ 400, 375 });
 		theButtonMgr->getBtn("exit_btn")->render(theRenderer, &theButtonMgr->getBtn("exit_btn")->getSpriteDimensions(), &theButtonMgr->getBtn("exit_btn")->getSpritePos(), theButtonMgr->getBtn("exit_btn")->getSpriteScale());
 	}
 	break;
@@ -209,12 +210,12 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 		tempTextTexture->renderTexture(theRenderer, tempTextTexture->getTexture(), &tempTextTexture->getTextureRect(), &pos, scale);
 
 		//a simple thanks for playing message
-		tempTextTexture = theTextureMgr->getTexture("ThanksTxt");
+		tempTextTexture = theTextureMgr->getTexture("GameOverTxt");
 		pos = { 300, 10, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
 		tempTextTexture->renderTexture(theRenderer, tempTextTexture->getTexture(), &tempTextTexture->getTextureRect(), &pos, scale);
 
 		//a farewell message!
-		tempTextTexture = theTextureMgr->getTexture("SeeYouTxt");
+		tempTextTexture = theTextureMgr->getTexture("ThanksTxt");
 		pos = { 300, 75, tempTextTexture->getTextureRect().w, tempTextTexture->getTextureRect().h };
 		tempTextTexture->renderTexture(theRenderer, tempTextTexture->getTexture(), &tempTextTexture->getTextureRect(), &pos, scale);
 
@@ -227,9 +228,9 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 		playerScoreTexture->renderTexture(theRenderer, playerScoreTexture->getTexture(), &playerScoreTexture->getTextureRect(), &scorePos, scoreScale);
 
 		//renders menu and exit buttons once the game is over
-		theButtonMgr->getBtn("menu_btn")->setSpritePos({ 500, 500 });
+		theButtonMgr->getBtn("menu_btn")->setSpritePos({ 400, 500 });
 		theButtonMgr->getBtn("menu_btn")->render(theRenderer, &theButtonMgr->getBtn("menu_btn")->getSpriteDimensions(), &theButtonMgr->getBtn("menu_btn")->getSpritePos(), theButtonMgr->getBtn("menu_btn")->getSpriteScale());
-		theButtonMgr->getBtn("exit_btn")->setSpritePos({ 500, 575 });
+		theButtonMgr->getBtn("exit_btn")->setSpritePos({ 400, 575 });
 		theButtonMgr->getBtn("exit_btn")->render(theRenderer, &theButtonMgr->getBtn("exit_btn")->getSpriteDimensions(), &theButtonMgr->getBtn("exit_btn")->getSpritePos(), theButtonMgr->getBtn("exit_btn")->getSpriteScale());
 	}
 	break;
@@ -302,7 +303,7 @@ void cGame::update(double deltaTime)
 			}
 
 			//remove any ingredients that reach the bottom of the screen without colliding with player
-			if ((*bulletIterartor)->getBoundingRect().y > 1000 || timeLeft <= 0)
+			if ((*bulletIterartor)->getBoundingRect().y > 700 || timeLeft <= 0)
 			{
 				(*bulletIterartor)->setActive(false);
 			}
